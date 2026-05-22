@@ -1,59 +1,103 @@
-# Deployment Guide
+# Deployment Guide for Cloudflare Pages
 
-## ⚠️ Important: This app is built for Cloudflare Workers
+## 🚀 Deploy to Cloudflare Pages
 
-This TanStack Start application is configured to deploy on **Cloudflare Pages/Workers**, not Vercel. 
+### Step 1: Go to Cloudflare Dashboard
 
-## 🚀 Recommended: Deploy to Cloudflare Pages
+1. Visit [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. Navigate to **Workers & Pages**
+3. Click **Create Application** → **Pages** → **Connect to Git**
 
-### Option 1: Cloudflare Pages (Recommended)
+### Step 2: Connect Your Repository
 
-1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. Navigate to **Workers & Pages** → **Create Application** → **Pages**
-3. Connect your GitHub repository: `https://github.com/Yashu257/newcipla.git`
-4. Configure build settings:
-   - **Build command**: `npm run build`
-   - **Build output directory**: `.output/public`
-   - **Root directory**: `newcipla2-main`
-5. Add environment variables:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-6. Click **Save and Deploy**
+1. Authorize Cloudflare to access your GitHub account
+2. Select repository: `Yashu257/newcipla`
 
-### Option 2: Deploy with Wrangler CLI
+### Step 3: Configure Build Settings
+
+**IMPORTANT**: Use these exact settings:
+
+- **Project name**: `newcipla` (or your preferred name)
+- **Production branch**: `main`
+- **Framework preset**: `None` (leave blank)
+- **Build command**: `npm run build`
+- **Build output directory**: `.output/public`
+- **Root directory**: `newcipla2-main`
+
+### Step 4: Add Environment Variables
+
+Click **Add variable** and add these:
+
+| Variable Name | Value |
+|--------------|-------|
+| `NODE_VERSION` | `20` |
+| `VITE_SUPABASE_URL` | Your Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Your Supabase anon key |
+
+**To find your Supabase credentials:**
+1. Go to your Supabase project dashboard
+2. Click on Settings → API
+3. Copy the Project URL and anon/public key
+
+### Step 5: Deploy
+
+1. Click **Save and Deploy**
+2. Wait 2-3 minutes for the build to complete
+3. Your site will be live at `https://newcipla.pages.dev`
+
+## 🔧 Troubleshooting
+
+### If build fails with "Could not detect static files":
+
+Make sure you set:
+- **Build command**: `npm run build` (NOT `npx wrangler deploy`)
+- **Build output directory**: `.output/public`
+- **Root directory**: `newcipla2-main`
+
+### If you see "Module not found" errors:
+
+Add environment variable:
+- `NODE_VERSION` = `20`
+
+### If Supabase doesn't work:
+
+Make sure you added both environment variables:
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+## 📝 Custom Domain (Optional)
+
+After deployment:
+1. Go to your Pages project
+2. Click **Custom domains**
+3. Click **Set up a custom domain**
+4. Follow the instructions to add your domain
+
+## 🔄 Automatic Deployments
+
+Every time you push to the `main` branch on GitHub, Cloudflare will automatically rebuild and deploy your site.
+
+## 💡 Local Development
 
 ```bash
-# Install Wrangler globally
-npm install -g wrangler
+# Install dependencies
+npm install
 
-# Login to Cloudflare
-wrangler login
+# Run development server
+npm run dev
 
-# Deploy
+# Build for production
 npm run build
-wrangler pages deploy .output/public --project-name=newcipla
+
+# Preview production build locally
+npm run preview
 ```
 
-## 🔧 Alternative: Deploy to Vercel (Requires Changes)
+## ⚡ Why Cloudflare Pages?
 
-If you must use Vercel, you'll need to:
-
-1. **Change the build adapter** from Cloudflare to Vercel
-2. **Modify vite.config.ts** to use Vercel's adapter
-3. **Update dependencies** to include Vercel-specific packages
-
-This requires significant code changes and is not recommended for this project.
-
-## 📝 Why Cloudflare?
-
-- Your app uses `@cloudflare/vite-plugin`
-- The `wrangler.jsonc` configuration is for Cloudflare Workers
-- TanStack Start is configured with Cloudflare compatibility flags
-- The build output (`.output`) is structured for Cloudflare's edge runtime
-
-## 🌐 After Deployment
-
-Once deployed on Cloudflare Pages, your site will be available at:
-`https://newcipla.pages.dev`
-
-You can also add a custom domain in the Cloudflare Pages settings.
+- ✅ Free unlimited bandwidth
+- ✅ Global CDN with 300+ locations
+- ✅ Automatic HTTPS
+- ✅ Built-in DDoS protection
+- ✅ Instant rollbacks
+- ✅ Preview deployments for every commit
